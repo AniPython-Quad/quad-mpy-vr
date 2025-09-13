@@ -1,0 +1,99 @@
+# 修改 main.py 文件
+"""
+舵机与 esp32 引脚接线图, 数据口方向为后 (tail)
+
+    前 (head)
+        -----               -----
+        |  2  |             |  3  |
+        |pin25|             |Pin18|
+        ----- -----   ----- -----
+            |  0  | |  1  |
+            |Pin12| |Pin16|
+             -----   -----
+            |  4  | |  5  |
+            |Pin13| |Pin17|
+        ----- -----   ----- -----
+        |  6  |             |  7  |
+        |Pin26|             |Pin19|
+        -----               -----
+    后 (tail)
+"""
+
+from quad import Quad
+import machine
+import time
+from ble_controller import BLEController
+from settings import BLE_MAC
+
+robot = Quad()
+robot.init(12, 16, 25, 18, 13, 17, 26, 19)
+robot.setTrims(0, 0, 0, 0, 0, 0, 0, 0)
+
+# 动作队列
+current_key_hex = ""
+
+
+def handle_notify(key_hex):
+    global current_key_hex
+    print("===> 回调函数触发，按键值:", key_hex)
+    # 方向键
+    current_key_hex = key_hex
+    # if key_hex == "D1":  # 上
+    #     action_fun = robot.forward
+    # elif key_hex == "D2":
+    #     action_fun = robot.backward
+    # elif key_hex == "D3":
+    #     action_fun = robot.turn_L
+    # elif key_hex == "D4":
+    #     action_fun = robot.turn_R
+    #
+    # # ABCD 键
+    # elif key_hex == "A2":  # 按键A
+    #     action_fun = robot.hello
+    # elif key_hex == "A3":  # 按键B
+    #     action_fun = robot.moonwalk_L
+    # elif key_hex == "A4":  # 按键C
+    #     action_fun = robot.up_down
+    # elif key_hex == "A5":  # 按键D
+    #     action_fun = robot.front_back
+
+
+# 创建蓝牙控制器实例
+ble_controller = BLEController(BLE_MAC, notify_callback=handle_notify)
+ble_controller.run()  # 启动扫描
+
+# 主循环
+while True:
+    # 处理蓝牙事件
+    if not ble_controller.update():
+        break
+
+    # 处理动作队列
+    if current_key_hex:
+
+        # 根据动作名称调用相应的方法
+        if current_key_hex == "D1":
+            robot.forward(steps=1, t=800)
+        elif current_key_hex == "D2":
+            robot.backward(steps=1, t=800)
+        elif current_key_hex == "D3":
+            robot.turn_L(steps=1, t=800)
+        elif current_key_hex == "D4":
+            robot.turn_R(steps=1, t=800)
+        elif current_key_hex == "D0":
+            current_key_hex = ""
+        elif current_key_hex == "A1":
+            robot.home()
+            current_key_hex = ""
+        elif current_key_hex == "A2":
+            robot.hello()
+            current_key_hex = ""
+        elif current_key_hex == "A3":
+            robot.moonwalk_L(steps=4, t=2000)
+            current_key_hex = ""
+
+    # 短暂休眠以允许系统处理其他任务
+    time.sleep_ms(10)
+
+print("未找到蓝牙手柄, 进入深度睡眠模式")
+machine.deepsleep()
