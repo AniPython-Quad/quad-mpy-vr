@@ -55,23 +55,31 @@ while True:
 
         # 根据动作名称调用相应的方法
         if current_key_hex == "D1":
+            print("forward")
             robot.forward(steps=1, t=800)
         elif current_key_hex == "D2":
+            print("backward")
             robot.backward(steps=1, t=800)
         elif current_key_hex == "D3":
+            print("turn_L")
             robot.turn_L(steps=1, t=800)
         elif current_key_hex == "D4":
+            print("turn_R")
             robot.turn_R(steps=1, t=800)
         elif current_key_hex == "D0":
+            print("stop")
             current_key_hex = ""
         elif current_key_hex == "A1":
+            print("home")
             robot.home()
             current_key_hex = ""
         elif current_key_hex == "A2":
+            print("hello")
             robot.hello()
             current_key_hex = ""
         elif current_key_hex == "A3":
-            robot.moonwalk_L(steps=4, t=2000)
+            print("moonwalk_L")
+            robot.moonwalk_L(steps=2, t=2000)
             current_key_hex = ""
 
     # 短暂休眠以允许系统处理其他任务
