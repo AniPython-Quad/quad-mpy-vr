@@ -145,7 +145,7 @@ class Quad:
         if self.getRestState() == False:  # -- Go to rest position only if necessary
             homes = [90] * self._servo_totals  # -- All the servos at rest position
             self._moveServos(500, homes)  # -- Move the servos in half amplitude second
-            # self.detachServos()
+            self.detachServos()
             self.setRestState(True)
 
 
