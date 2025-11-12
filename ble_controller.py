@@ -168,39 +168,6 @@ class BLEController:
         self.ble.gap_scan(None)
         self.ble.active(False)
 
-    # def run(self):
-    #     self.start_scan()
-    #     while True:
-    #
-    #         if time.time() - self.last_activity_time > NO_NOTIFY_TIMEOUT * 60:
-    #             print(NO_NOTIFY_TIMEOUT, "分钟无手柄操作，自动退出")
-    #             self.ble_quit()
-    #             break
-    #
-    #         if self.boot_key.value() == 0:
-    #             print("已按下BOOT按键，停止扫描")
-    #             self.ble_quit()
-    #             break
-    #
-    #         if self.connected:
-    #             time.sleep(0.1)
-    #             self.led_on()
-    #             continue
-    #
-    #         else:
-    #             if not self.target_to_connect:
-    #                 if time.time() - self.scan_start_time < self.scan_time_over:
-    #                     continue
-    #                 else:
-    #                     print("扫描超时，停止扫描, 超时时间:", self.scan_time_over)
-    #                     self.ble_quit()
-    #                     break
-    #             else:
-    #                 addr_type, addr = self.target_to_connect
-    #                 print("尝试连接设备:", self.decode_mac(addr))
-    #                 self.ble.gap_connect(addr_type, addr)
-    #                 self.target_to_connect = None
-
     def run(self):
         """启动扫描但不阻塞"""
         self.start_scan()

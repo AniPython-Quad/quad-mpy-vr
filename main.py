@@ -38,24 +38,6 @@ def handle_notify(key_hex):
     print("===> 回调函数触发，按键值:", key_hex)
     # 方向键
     current_key_hex = key_hex
-    # if key_hex == "D1":  # 上
-    #     action_fun = robot.forward
-    # elif key_hex == "D2":
-    #     action_fun = robot.backward
-    # elif key_hex == "D3":
-    #     action_fun = robot.turn_L
-    # elif key_hex == "D4":
-    #     action_fun = robot.turn_R
-    #
-    # # ABCD 键
-    # elif key_hex == "A2":  # 按键A
-    #     action_fun = robot.hello
-    # elif key_hex == "A3":  # 按键B
-    #     action_fun = robot.moonwalk_L
-    # elif key_hex == "A4":  # 按键C
-    #     action_fun = robot.up_down
-    # elif key_hex == "A5":  # 按键D
-    #     action_fun = robot.front_back
 
 
 # 创建蓝牙控制器实例
